@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -144,6 +145,29 @@ public class JavaService {
 		javaRepository.save(det);
 		
 		return output;
+	}
+	
+	//check param
+	public boolean chackParam(String val) {
+		
+		HashMap<Character, Character> map = new HashMap<>();
+		map.put(')', '(');
+		map.put(']', '[');
+		map.put('}', '{');
+		
+		Stack<Character> stack = new Stack<>();
+		
+		for(char x:val.toCharArray()) {
+			if(map.containsKey(x)) {
+				char top = stack.isEmpty()?'#':stack.pop();
+				if(top!=map.get(x)) {
+					return false;
+				}
+			}else if(map.containsValue(x)) {
+				stack.push(x);
+			}
+		}
+		return stack.isEmpty();
 	}
 
 }
